@@ -19,6 +19,8 @@ import com.company.service.inter.DepartmentServiceInter;
 import com.company.service.inter.JobServiceInter;
 import com.company.service.inter.EmployeesServiceInter;
 import com.company.service.inter.CountryServiceInter;
+import com.company.service.inter.EmployeeMonthServiceInter;
+import com.company.service.inter.MonthServiceInter;
 
 //@SpringBootApplication
 //public class HrmDesktopAppApplication {
@@ -68,14 +70,24 @@ public class HrmDesktopAppApplication {
     @Autowired
     public static CountryServiceInter countryService;
     
+    @Autowired
+    public static MonthServiceInter monthService;
+
+    @Autowired
+    public static EmployeeMonthServiceInter employeeMonthService;    
+    
     public static void main(String[] args) {
         ConfigurableApplicationContext context = new SpringApplicationBuilder(HrmDesktopAppApplication.class).headless(false).run(args);
-        Users appFrame = context.getBean(Users.class);
+        //Users appFrame = context.getBean(Users.class);
+        MenuForm appFrame = context.getBean(MenuForm.class);
+
         //EmployeesForm appFrame = context.getBean(EmployeesForm.class);
         employeeService = context.getBean(EmployeesServiceInter.class);
         jobService = context.getBean(JobServiceInter.class);
         departmentService = context.getBean(DepartmentServiceInter.class);
         countryService = context.getBean(CountryServiceInter.class);
+        monthService = context.getBean(MonthServiceInter.class);
+        employeeMonthService = context.getBean(EmployeeMonthServiceInter.class);
 
         //Countries c = context.getBean(Countries.class);
 

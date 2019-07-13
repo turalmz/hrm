@@ -3,95 +3,71 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.company;
+package com.company.panel;
 
-//import com.company.Context;
-//import com.company.dao.impl.UserDaoImpl;
-//import com.company.entity.User;
-import com.company.panel.EmployeeForm;
-import com.company.entity.Employees;
+
+import com.company.HrmDesktopAppApplication;
+import com.company.entity.EmployeeMonth;
 import com.company.service.inter.EmployeesServiceInter;
+
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import javax.annotation.PostConstruct;
+import com.company.entity.Employees;
+import com.company.service.inter.EmployeeMonthHoursServiceInter;
+import com.company.service.inter.EmployeeMonthServiceInter;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 
 /**
  *
  * @author TURAL
  */
-@Component
-public class Users extends javax.swing.JFrame {
+public class EmployeeWorkForm extends javax.swing.JFrame {
 
     /**
      * Creates new form Users
      */
-//    @Autowired
-//    private EmployeesServiceInter userService;
+    private final EmployeeMonthServiceInter employeeDao = HrmDesktopAppApplication.employeeMonthService;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    
-    public Users() {
+    public EmployeeWorkForm() {
         initComponents();
-        
-        //alma();
+        ///alma();
 
     }
     public void alma(){
-        generateUsers(null);
+        generateEmployees();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
     }
-
-    private void generateUsers(List<Employees> users) {
-//        if(users==null){
-//            users = userService.getAll();
-//        }
-        users = HrmDesktopAppApplication.employeeService.getAll();
+    private void generateEmployees() {
+        List<EmployeeMonth> users = employeeDao.getAll();
         DefaultTableModel tableModel = new DefaultTableModel();
         Vector vectorHeaders = new Vector();
 
-        vectorHeaders.add("id");
-        vectorHeaders.add("Firstname");
-        vectorHeaders.add("Lastname");
-        vectorHeaders.add("Birth Date");
+        vectorHeaders.add("ID");
+        vectorHeaders.add("Day");
+        vectorHeaders.add("Start");
 
-        vectorHeaders.add("Email");
-        vectorHeaders.add("Phone");
-        vectorHeaders.add("Address");
+        vectorHeaders.add("End");
+        vectorHeaders.add("Month");
+        vectorHeaders.add("Employee");
 
         Vector vectorRows = new Vector();
-        for (Employees us : users) {
+        for (EmployeeMonth us : users) {
 
             Vector row = new Vector();
             row.add(us.getId());
 
-            row.add(us.getFirstname());
-            row.add(us.getLastname());
-//            txtAreaProfile.setText(us.getProfileDescription());
-            try {
-                Date dt = (Date) us.getHireDate();
-                String sdt = sdf.format(dt);
-                row.add(sdt);
+            row.add(us.getDay());
+            row.add(us.getStart());
+            row.add(us.getEnd());
 
-            } catch (Exception ex) {
-                row.add(null);
-
-            }
-            row.add(us.getEmail());
-            row.add(us.getPhoneNumber());
-            try{
-            row.add(us.getJobId().getJobTitle());
-            }catch(Exception ex){
-            }
+            row.add(us.getMonthId());
+            row.add(us.getEmpId());
             vectorRows.add(row);
         }
         tableModel.setDataVector(vectorRows, vectorHeaders);
@@ -247,24 +223,9 @@ public class Users extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String firstname;
-        String lastname;
-        
-        if (txtName.getText().equals("")) {
-            firstname = null;
-        }else{
-            firstname = txtName.getText();
-        }
-               
-        if (txtLastname.getText().equals("")) {
 
-            lastname = null;
-        }else{
-            lastname = txtLastname.getText();
-        }
-               
-     generateUsers(HrmDesktopAppApplication.employeeService.getAll());
-    
+        generateEmployees();
+
 
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -278,19 +239,16 @@ public class Users extends javax.swing.JFrame {
             System.out.println("value : " + value);
             System.out.println("row : " + row);
 
-            HrmDesktopAppApplication.employeeService.removeEmployees(Integer.parseInt(value));
+            employeeDao.removeEmployeeMonth(Integer.parseInt(value));
 
         }
-        generateUsers(null);
-
-
+        generateEmployees();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
         EmployeeForm uf = new EmployeeForm();
         uf.setVisible(true);
-        generateUsers(null);
 
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -306,8 +264,6 @@ public class Users extends javax.swing.JFrame {
             uf.setVisible(true);
 
         }
-        generateUsers(null);
-
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
@@ -327,13 +283,13 @@ public class Users extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Users.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Users.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Users.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Users.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -341,7 +297,7 @@ public class Users extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Users().setVisible(true);
+                new EmployeeWorkForm().setVisible(true);
             }
         });
     }

@@ -38,6 +38,8 @@ public class EmployeesForm extends javax.swing.JFrame {
     public void alma(){
         generateEmployees();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
     }
     private void generateEmployees() {
         List<com.company.entity.Employees> users = employeeDao.getAll();

@@ -3,95 +3,66 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.company;
+package com.company.panel;
 
-//import com.company.Context;
-//import com.company.dao.impl.UserDaoImpl;
-//import com.company.entity.User;
-import com.company.panel.EmployeeForm;
-import com.company.entity.Employees;
-import com.company.service.inter.EmployeesServiceInter;
+
+import com.company.HrmDesktopAppApplication;
+import com.company.service.inter.MonthServiceInter;
+
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import javax.annotation.PostConstruct;
+import com.company.entity.Employees;
+import com.company.entity.Month;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 
 /**
  *
  * @author TURAL
  */
-@Component
-public class Users extends javax.swing.JFrame {
+public class MonthsForm extends javax.swing.JFrame {
 
     /**
      * Creates new form Users
      */
-//    @Autowired
-//    private EmployeesServiceInter userService;
-    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private final MonthServiceInter entityDao = HrmDesktopAppApplication.monthService;
 
-    
-    public Users() {
+    public MonthsForm() {
         initComponents();
-        
         //alma();
-
+        generateEmployees();
     }
     public void alma(){
-        generateUsers(null);
+        generateEmployees();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
     }
-
-    private void generateUsers(List<Employees> users) {
-//        if(users==null){
-//            users = userService.getAll();
-//        }
-        users = HrmDesktopAppApplication.employeeService.getAll();
+    
+    private void generateEmployees() {
+        List<Month> userList = entityDao.getAll();
         DefaultTableModel tableModel = new DefaultTableModel();
         Vector vectorHeaders = new Vector();
 
-        vectorHeaders.add("id");
-        vectorHeaders.add("Firstname");
-        vectorHeaders.add("Lastname");
-        vectorHeaders.add("Birth Date");
+        vectorHeaders.add("ID");
+        vectorHeaders.add("Month");
+        vectorHeaders.add("Year");
 
-        vectorHeaders.add("Email");
-        vectorHeaders.add("Phone");
-        vectorHeaders.add("Address");
+
 
         Vector vectorRows = new Vector();
-        for (Employees us : users) {
+        for (Month us : userList) {
 
             Vector row = new Vector();
             row.add(us.getId());
 
-            row.add(us.getFirstname());
-            row.add(us.getLastname());
-//            txtAreaProfile.setText(us.getProfileDescription());
-            try {
-                Date dt = (Date) us.getHireDate();
-                String sdt = sdf.format(dt);
-                row.add(sdt);
+            row.add(us.getMonth());
 
-            } catch (Exception ex) {
-                row.add(null);
-
-            }
-            row.add(us.getEmail());
-            row.add(us.getPhoneNumber());
-            try{
-            row.add(us.getJobId().getJobTitle());
-            }catch(Exception ex){
-            }
+  
+            row.add(us.getYear());
             vectorRows.add(row);
         }
         tableModel.setDataVector(vectorRows, vectorHeaders);
@@ -109,14 +80,12 @@ public class Users extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        txtName = new javax.swing.JTextField();
+        txtYear = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
-        txtId = new javax.swing.JTextField();
-        txtLastname = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        txtMonth = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -155,11 +124,9 @@ public class Users extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Id");
+        jLabel2.setText("Year");
 
-        jLabel2.setText("Firstname");
-
-        jLabel4.setText("Lastname");
+        jLabel4.setText("Month");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -167,11 +134,11 @@ public class Users extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-                    .addComponent(txtId))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -179,14 +146,8 @@ public class Users extends javax.swing.JFrame {
                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(txtMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -194,14 +155,12 @@ public class Users extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSearch)
@@ -236,9 +195,8 @@ public class Users extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
@@ -247,24 +205,9 @@ public class Users extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String firstname;
-        String lastname;
-        
-        if (txtName.getText().equals("")) {
-            firstname = null;
-        }else{
-            firstname = txtName.getText();
-        }
-               
-        if (txtLastname.getText().equals("")) {
 
-            lastname = null;
-        }else{
-            lastname = txtLastname.getText();
-        }
-               
-     generateUsers(HrmDesktopAppApplication.employeeService.getAll());
-    
+        generateEmployees();
+
 
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -278,19 +221,25 @@ public class Users extends javax.swing.JFrame {
             System.out.println("value : " + value);
             System.out.println("row : " + row);
 
-            HrmDesktopAppApplication.employeeService.removeEmployees(Integer.parseInt(value));
+            entityDao.removeMonth(Integer.parseInt(value));
 
         }
-        generateUsers(null);
-
-
+        generateEmployees();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        EmployeeForm uf = new EmployeeForm();
-        uf.setVisible(true);
-        generateUsers(null);
+        Month currentMonth = new Month();
+
+        currentMonth.setMonth(Integer.parseInt(txtMonth.getText()));
+        
+        currentMonth.setYear(Integer.parseInt(txtYear.getText()));
+        
+        entityDao.addMonth(currentMonth);
+        generateEmployees();
+        
+//        EmployeeForm uf = new EmployeeForm();
+//        uf.setVisible(true);
 
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -302,12 +251,18 @@ public class Users extends javax.swing.JFrame {
         if (row > -1) {
 
             String value = tblUsers.getModel().getValueAt(row, column).toString();
-            EmployeeForm uf = new EmployeeForm(Integer.parseInt(value));
-            uf.setVisible(true);
+            //EmployeeForm uf = new EmployeeForm(Integer.parseInt(value));
+            //uf.setVisible(true);
+            
+            Month currentMonth = new Month(Integer.parseInt(value));
 
+            currentMonth.setMonth(Integer.parseInt(txtMonth.getText()));
+
+            currentMonth.setYear(Integer.parseInt(txtYear.getText()));
+
+            entityDao.addMonth(currentMonth);
         }
-        generateUsers(null);
-
+        generateEmployees();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
@@ -327,13 +282,13 @@ public class Users extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Users.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Users.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Users.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Users.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -341,7 +296,7 @@ public class Users extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Users().setVisible(true);
+                new MonthsForm().setVisible(true);
             }
         });
     }
@@ -351,14 +306,12 @@ public class Users extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsers;
-    private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtLastname;
-    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtMonth;
+    private javax.swing.JTextField txtYear;
     // End of variables declaration//GEN-END:variables
 }
