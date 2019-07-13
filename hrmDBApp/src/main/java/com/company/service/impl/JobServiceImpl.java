@@ -23,7 +23,7 @@ public class JobServiceImpl implements JobServiceInter {
 
     @Override
     public List<Jobs> getAll() {
-        return entityDao.getAll();
+        return entityDao.findAll();
     }
 
     @Override

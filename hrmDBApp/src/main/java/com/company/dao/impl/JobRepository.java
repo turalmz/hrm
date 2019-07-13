@@ -13,7 +13,7 @@ import java.util.List;
 public interface JobRepository extends JpaRepository<Jobs, Integer> {
 
 
-    List<Jobs> getAll();
+    List<Jobs> findAll();
 
     Jobs findById(int id);
 

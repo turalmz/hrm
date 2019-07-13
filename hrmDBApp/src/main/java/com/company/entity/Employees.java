@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -41,6 +42,11 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Employees.findByCommissionPct", query = "SELECT e FROM Employees e WHERE e.commissionPct = :commissionPct")
     , @NamedQuery(name = "Employees.findByLastname", query = "SELECT e FROM Employees e WHERE e.lastname = :lastname")})
 public class Employees implements Serializable {
+
+    @OneToMany(mappedBy = "empId")
+    private List<EmployeeMonthHours> employeeMonthHoursList;
+    @OneToMany(mappedBy = "empId")
+    private List<EmployeeMonth> employeeMonthList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -222,6 +228,24 @@ public class Employees implements Serializable {
     @Override
     public String toString() {
         return "com.company.Employees[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<EmployeeMonthHours> getEmployeeMonthHoursList() {
+        return employeeMonthHoursList;
+    }
+
+    public void setEmployeeMonthHoursList(List<EmployeeMonthHours> employeeMonthHoursList) {
+        this.employeeMonthHoursList = employeeMonthHoursList;
+    }
+
+    @XmlTransient
+    public List<EmployeeMonth> getEmployeeMonthList() {
+        return employeeMonthList;
+    }
+
+    public void setEmployeeMonthList(List<EmployeeMonth> employeeMonthList) {
+        this.employeeMonthList = employeeMonthList;
     }
     
 }

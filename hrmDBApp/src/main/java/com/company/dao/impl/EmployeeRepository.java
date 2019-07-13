@@ -2,6 +2,7 @@ package com.company.dao.impl;
 
 import com.company.entity.Employees;
 import com.company.entity.Jobs;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,7 @@ public interface EmployeeRepository extends JpaRepository<Employees, Integer> {
 
     List<Employees> findByFirstnameAndLastname(String firstname, String lastname);
 
-    List<Employees> getAll();
+    List<Employees> findAll();
 
     List<Employees> findByEmail(String email);
 
@@ -25,7 +26,7 @@ public interface EmployeeRepository extends JpaRepository<Employees, Integer> {
     @Override
     Employees save(Employees u);
     
-    List<Employees> findByJob(Jobs firstname);
+    List<Employees> findByJobId(Jobs firstname);
 
 
 }

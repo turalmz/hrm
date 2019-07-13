@@ -1,3 +1,5 @@
+package com.company.service.impl;
+
 import com.company.dao.impl.DepartmentRepository;
 import com.company.dao.impl.JobRepository;
 import com.company.entity.Departments;
@@ -24,7 +26,7 @@ public class DepartmentServiceImpl implements DepartmentServiceInter {
 
     @Override
     public List<Departments> getAll() {
-        return entityDao.getAll();
+        return entityDao.findAll();
     }
 
     @Override

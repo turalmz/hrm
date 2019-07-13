@@ -13,7 +13,7 @@ import java.util.List;
 public interface DepartmentRepository extends JpaRepository<Departments, Integer> {
 
 
-    List<Departments> getAll();
+    List<Departments> findAll();
 
     Departments findById(int id);
 

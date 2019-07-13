@@ -9,6 +9,9 @@
     <class>com.company.entity.Departments</class>
     <class>com.company.entity.Countries</class>
     <class>com.company.entity.Employees</class>
+    <class>com.company.entity.Month</class>
+    <class>com.company.entity.EmployeeMonthHours</class>
+    <class>com.company.entity.EmployeeMonth</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/hr?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

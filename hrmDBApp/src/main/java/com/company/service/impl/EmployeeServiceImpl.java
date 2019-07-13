@@ -11,21 +11,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @Service
 @Transactional
+@Qualifier("employeeService")
 public class EmployeeServiceImpl implements EmployeesServiceInter {
 
 
     @Autowired
-
     private EmployeeRepository entityDao;
 
     @Override
     public List<Employees> getAll() {
-        return entityDao.getAll();
+        return entityDao.findAll();
     }
+
+    @Override
+    public List<Employees> findByFirstnameAndLastname(String firstname, String lastname){
+        return entityDao.findByFirstnameAndLastname(firstname,lastname);
+    }
+
+
 
     @Override
     public Employees getById(int userId) {

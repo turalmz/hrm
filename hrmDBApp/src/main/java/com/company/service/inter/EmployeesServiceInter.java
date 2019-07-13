@@ -17,6 +17,8 @@ public interface EmployeesServiceInter {
 
     List<Employees> getAll();
 
+    List<Employees> findByFirstnameAndLastname(String firstname, String lastname);
+
     public Employees getById(int id);
 
     public boolean addEmployees(Employees u);
