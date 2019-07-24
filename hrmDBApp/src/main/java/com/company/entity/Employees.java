@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,11 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Employees.findByCommissionPct", query = "SELECT e FROM Employees e WHERE e.commissionPct = :commissionPct")
     , @NamedQuery(name = "Employees.findByLastname", query = "SELECT e FROM Employees e WHERE e.lastname = :lastname")})
 public class Employees implements Serializable {
-
-    @OneToMany(mappedBy = "empId")
-    private List<EmployeeMonthHours> employeeMonthHoursList;
-    @OneToMany(mappedBy = "empId")
-    private List<EmployeeMonth> employeeMonthList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,20 +65,20 @@ public class Employees implements Serializable {
     private BigDecimal commissionPct;
     @Column(name = "LASTNAME")
     private String lastname;
-    @OneToMany(mappedBy = "managerId")
+    @OneToMany(mappedBy = "managerId", fetch = FetchType.LAZY)
     private List<Departments> departmentsList;
     @JoinColumn(name = "DEPARTMENT_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Departments departmentId;
     @JoinColumn(name = "JOB_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Jobs jobId;
-    @OneToMany(mappedBy = "managerId")
+    @OneToMany(mappedBy = "managerId", fetch = FetchType.LAZY)
     private List<Employees> employeesList;
     @JoinColumn(name = "MANAGER_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Employees managerId;
-    @OneToMany(mappedBy = "employeeId")
+    @OneToMany(mappedBy = "employeeId", fetch = FetchType.LAZY)
     private List<JobHistory> jobHistoryList;
 
     public Employees() {
@@ -157,6 +152,8 @@ public class Employees implements Serializable {
         this.lastname = lastname;
     }
 
+
+
     public List<Departments> getDepartmentsList() {
         return departmentsList;
     }
@@ -227,25 +224,7 @@ public class Employees implements Serializable {
 
     @Override
     public String toString() {
-        return "com.company.Employees[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public List<EmployeeMonthHours> getEmployeeMonthHoursList() {
-        return employeeMonthHoursList;
-    }
-
-    public void setEmployeeMonthHoursList(List<EmployeeMonthHours> employeeMonthHoursList) {
-        this.employeeMonthHoursList = employeeMonthHoursList;
-    }
-
-    @XmlTransient
-    public List<EmployeeMonth> getEmployeeMonthList() {
-        return employeeMonthList;
-    }
-
-    public void setEmployeeMonthList(List<EmployeeMonth> employeeMonthList) {
-        this.employeeMonthList = employeeMonthList;
+        return this.firstname +" "+this.lastname;
     }
     
 }

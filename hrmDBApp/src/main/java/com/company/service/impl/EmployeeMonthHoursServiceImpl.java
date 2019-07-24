@@ -2,6 +2,7 @@ package com.company.service.impl;
 
 
 import com.company.dao.impl.EmployeeMonthHoursRepository;
+import com.company.entity.EmployeeMonth;
 import com.company.entity.EmployeeMonthHours;
 import com.company.service.inter. EmployeeMonthHoursServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,13 @@ public class EmployeeMonthHoursServiceImpl implements EmployeeMonthHoursServiceI
     public EmployeeMonthHours getById(int userId) {
         return entityDao.findById(userId);
     }
+    
+    
+    @Override
+    public EmployeeMonthHours findByDay(int userId) {
+        return entityDao.findByDay(userId);
+    }
+    
 
     @Override
     public boolean addEmployeeMonthHours(EmployeeMonthHours u) {

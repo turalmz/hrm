@@ -8,6 +8,7 @@ package com.company.panel;
 
 import com.company.HrmDesktopAppApplication;
 import com.company.entity.EmployeeMonth;
+import com.company.entity.EmployeeMonthHours;
 import com.company.service.inter.EmployeesServiceInter;
 
 
@@ -18,8 +19,14 @@ import java.util.Vector;
 import com.company.entity.Employees;
 import com.company.service.inter.EmployeeMonthHoursServiceInter;
 import com.company.service.inter.EmployeeMonthServiceInter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -30,12 +37,28 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     /**
      * Creates new form Users
      */
+    
+    List<Integer> listSelected =  new ArrayList<Integer>();;
+    HashMap<Integer, HashMap<Integer,Object>> hmap = new HashMap<Integer, HashMap<Integer,Object>>();
+    HashMap<Integer, String> hmapStatus = new HashMap<Integer, String>();
+
+    HashMap<Integer,Object> helement = null;
+    
     private final EmployeeMonthServiceInter employeeDao = HrmDesktopAppApplication.employeeMonthService;
+    private final EmployeeMonthHoursServiceInter employeehoursDao = HrmDesktopAppApplication.employeeMonthHoursService;
+    private final EmployeesServiceInter empDao = HrmDesktopAppApplication.employeeService;
+
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public EmployeeWorkForm() {
         initComponents();
         ///alma();
+        
+        cbEmp.removeAllItems();
+
+        for (Employees con : empDao.getAll()) {
+            cbEmp.addItem(con);
+        }
 
     }
     public void alma(){
@@ -45,33 +68,113 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     }
     private void generateEmployees() {
         List<EmployeeMonth> users = employeeDao.getAll();
-        DefaultTableModel tableModel = new DefaultTableModel();
+        //DefaultTableModel tableModel = new DefaultTableModel();
+
         Vector vectorHeaders = new Vector();
 
         vectorHeaders.add("ID");
-        vectorHeaders.add("Day");
-        vectorHeaders.add("Start");
-
-        vectorHeaders.add("End");
-        vectorHeaders.add("Month");
         vectorHeaders.add("Employee");
+        vectorHeaders.add("Hours");
+        vectorHeaders.add("Month");
+        vectorHeaders.add("1");
+        vectorHeaders.add("2");
+        vectorHeaders.add("3");
+        vectorHeaders.add("4");
+        vectorHeaders.add("5");
+        vectorHeaders.add("6");
+        vectorHeaders.add("7");
+        vectorHeaders.add("8");
+        vectorHeaders.add("9");
+        vectorHeaders.add("10");
+        vectorHeaders.add("11");
+        vectorHeaders.add("12");
+        vectorHeaders.add("13");
+        vectorHeaders.add("14");
+        vectorHeaders.add("15");
+        vectorHeaders.add("16");
+        vectorHeaders.add("17");
+        vectorHeaders.add("18");
+        vectorHeaders.add("19");
+        vectorHeaders.add("20");
+        vectorHeaders.add("21");
+        vectorHeaders.add("22");
+        vectorHeaders.add("23");
+        vectorHeaders.add("24");
+        vectorHeaders.add("25");
+        vectorHeaders.add("26");
+        vectorHeaders.add("27");
+        vectorHeaders.add("28");
+        vectorHeaders.add("29");
+        vectorHeaders.add("30");
+        vectorHeaders.add("31");
+
+        
 
         Vector vectorRows = new Vector();
         for (EmployeeMonth us : users) {
 
             Vector row = new Vector();
+            
             row.add(us.getId());
+            
 
-            row.add(us.getDay());
-            row.add(us.getStart());
-            row.add(us.getEnd());
-
+            row.add(cbEmp);
+            //row.add(us.getEmpId());
+            
+            row.add(us.getHours());
+            
             row.add(us.getMonthId());
-            row.add(us.getEmpId());
+            
+            for (int i=1;i<=31;i++ ){
+                List<EmployeeMonthHours> lst = us.getEmployeeMonthHoursList();
+
+                //System.out.print(lst);
+
+              
+                for (EmployeeMonthHours e :lst){
+
+                    if(i==e.getDay())
+                    //row.add(e.getHours());
+                        if(e.getHours()==1)
+                            row.add(Boolean.TRUE);
+                        else 
+                            row.add(Boolean.FALSE);   
+                        
+                    else{
+                        row.add(Boolean.FALSE);
+                    }
+
+                }
+            }
+            
+
+            
             vectorRows.add(row);
         }
-        tableModel.setDataVector(vectorRows, vectorHeaders);
+        
+        DefaultTableModel tableModel = new DefaultTableModel(vectorRows, vectorHeaders){
+        @Override
+        public Class<?> getColumnClass(int col) {
+            if(col >= 4 && col<35){
+                    return Boolean.class;
+                }
+                return super.getColumnClass(col);
+            }
+        };
+        
+        //tableModel.setDataVector(vectorRows, vectorHeaders);
         tblUsers.setModel(tableModel);
+        
+        TableColumn sportColumn = tblUsers.getColumnModel().getColumn(1);
+//        JComboBox comboBox = new JComboBox();
+//        comboBox.addItem("Snowboarding");
+//        comboBox.addItem("Rowing");
+//        comboBox.addItem("Chasing toddlers");
+//        comboBox.addItem("Speed reading");
+//        comboBox.addItem("Teaching high school");
+//        comboBox.addItem("None");
+        //sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
+        sportColumn.setCellEditor(new DefaultCellEditor(cbEmp));
 
     }
 
@@ -85,16 +188,13 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        txtName = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
-        txtId = new javax.swing.JTextField();
-        txtLastname = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        cbEmp = new javax.swing.JComboBox<>();
+        btnSave = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
 
@@ -131,11 +231,19 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Id");
+        btnSave.setText("save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("Firstname");
-
-        jLabel4.setText("Lastname");
+        btnRemove.setText("remove");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -143,47 +251,37 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-                    .addComponent(txtId))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(cbEmp, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addComponent(btnSave)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbEmp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSearch)
                     .addComponent(btnAdd)
                     .addComponent(btnUpdate)
-                    .addComponent(btnDelete)))
+                    .addComponent(btnDelete)
+                    .addComponent(btnRemove)))
         );
 
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
@@ -197,6 +295,11 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUsersMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblUsers);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -231,6 +334,9 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
 
+        
+        
+        
         int column = 0;
 
         for (int row : tblUsers.getSelectedRows()) {
@@ -260,11 +366,135 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         if (row > -1) {
 
             String value = tblUsers.getModel().getValueAt(row, column).toString();
-            EmployeeForm uf = new EmployeeForm(Integer.parseInt(value));
-            uf.setVisible(true);
+            listSelected.add(row);
+            hmap.put(row,hmap.get(row) );
+            System.err.println("--------list----------");
+            System.err.println(listSelected);
+            System.err.println("----------------------");
+            System.err.println("--------hmap----------");
+            System.err.println(hmap);
+            
+            System.err.println("----------------------");
 
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseClicked
+        // TODO add you            
+        
+        int row = tblUsers.rowAtPoint(evt.getPoint());
+        int col = tblUsers.columnAtPoint(evt.getPoint());
+                System.out.println("Count : " + row);
+
+        if (row >= 0 && col >= 0) {
+            
+            Boolean value = (Boolean) tblUsers.getModel().getValueAt(row, col);
+            listSelected.add(row);
+            
+            Object h = hmap.get(row);
+            
+            if(h == null){
+            
+                helement = new HashMap<Integer, Object>();
+                hmap.get(row);
+            }
+
+            System.err.println("----------------------");
+
+            System.err.println("--------hmap----------");
+            System.err.println(hmap);
+            helement.put(col,value);
+            hmap.put(row, helement);
+            
+            hmapStatus.put(row, "update");
+            
+            for (Map.Entry<Integer, HashMap<Integer,Object>> entry : hmap.entrySet()) {
+                System.out.println(entry.getKey()+" : "+entry.getValue());
+                
+                for (Map.Entry<Integer,Object> entr : entry.getValue().entrySet()) {
+                    System.out.println(entr.getKey()+" : "+entr.getValue());
+                } 
+                
+            } 
+
+            
+            System.err.println("----------------------");
+
+            System.err.println("--------hmapStatus----------");
+            
+            
+            for (Map.Entry<Integer,String> entr : hmapStatus.entrySet()) {
+                System.out.println(entr.getKey()+" : "+entr.getValue());
+            } 
+            
+            System.err.println("----------------------");
+            
+            
+        }
+        
+        
+
+    }//GEN-LAST:event_tblUsersMouseClicked
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        
+        for (Map.Entry<Integer, HashMap<Integer,Object>> entry : hmap.entrySet()) {
+            System.out.println(entry.getKey()+" : "+entry.getValue());
+            Object status = hmapStatus.get(entry.getKey());
+            
+            if(status == "delete"){
+                employeeDao.removeEmployeeMonth(Integer.parseInt(entry.getValue().get(0).toString()));
+            }else if(status=="update"){
+                
+                EmployeeMonth empMon= employeeDao.getById(Integer.parseInt(entry.getValue().get(0).toString()));
+                
+                for(EmployeeMonthHours emMonHors : empMon.getEmployeeMonthHoursList()){
+                    
+                    //if()
+                    emMonHors.setHours(8);
+                }
+                
+                //employeehoursDao.getById(Integer.parseInt(entry.getValue().get(0).toString()));
+            
+            }
+
+            for (Map.Entry<Integer,Object> entr : entry.getValue().entrySet()) {
+                System.out.println(entr.getKey()+" : "+entr.getValue());
+            } 
+                
+        } 
+        
+        
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        int column = 0;
+
+        for (int row : tblUsers.getSelectedRows()) {
+            System.out.println("Count : " + row);
+            String value = tblUsers.getModel().getValueAt(row, column).toString();
+            System.out.println("value : " + value);
+            System.out.println("row : " + row);
+
+            
+
+            System.err.println("--------hmapStatus----------");
+            
+            hmapStatus.put(row, "delete");
+            
+            hmap.put(row, (HashMap<Integer, Object>) new HashMap<Integer,Object>().put(column, value));
+            
+            for (Map.Entry<Integer,String> entr : hmapStatus.entrySet()) {
+                System.out.println(entr.getKey()+" : "+entr.getValue());
+            } 
+            
+            System.err.println("----------------------");
+
+            //employeeDao.removeEmployeeMonth(Integer.parseInt(value));
+
+        }
+    }//GEN-LAST:event_btnRemoveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -305,16 +535,13 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnRemove;
+    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JComboBox<Employees> cbEmp;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsers;
-    private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtLastname;
-    private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }

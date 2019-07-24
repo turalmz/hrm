@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,13 +48,13 @@ public class JobHistory implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date endDate;
     @JoinColumn(name = "DEPARTMENT_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Departments departmentId;
     @JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Employees employeeId;
     @JoinColumn(name = "JOB_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Jobs jobId;
 
     public JobHistory() {
@@ -133,7 +134,7 @@ public class JobHistory implements Serializable {
 
     @Override
     public String toString() {
-        return "com.company.JobHistory[ id=" + id + " ]";
+        return "com.company.entity.JobHistory[ id=" + id + " ]";
     }
     
 }

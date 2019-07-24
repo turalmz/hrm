@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,12 +19,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 /**
  *
  * @author TURAL
  */
 @Entity
 @Table(name = "countries")
+
 @NamedQueries({
     @NamedQuery(name = "Countries.findAll", query = "SELECT c FROM Countries c")
     , @NamedQuery(name = "Countries.findById", query = "SELECT c FROM Countries c WHERE c.id = :id")
@@ -37,10 +40,10 @@ public class Countries implements Serializable {
     private String id;
     @Column(name = "NAME")
     private String name;
-    @OneToMany(mappedBy = "countryId")
+    @OneToMany(mappedBy = "countryId", fetch = FetchType.EAGER)
     private List<Locations> locationsList;
     @JoinColumn(name = "REGION_ID", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Regions regionId;
 
     public Countries() {
@@ -66,6 +69,7 @@ public class Countries implements Serializable {
         this.name = name;
     }
 
+    
     public List<Locations> getLocationsList() {
         return locationsList;
     }
@@ -104,7 +108,7 @@ public class Countries implements Serializable {
 
     @Override
     public String toString() {
-        return "com.company.Countries[ id=" + id + " ]";
+        return "com.company.entity.Countries[ id=" + id + " ]";
     }
     
 }

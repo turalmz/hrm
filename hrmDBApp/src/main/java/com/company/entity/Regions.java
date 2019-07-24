@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,6 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "regions")
+
 @NamedQueries({
     @NamedQuery(name = "Regions.findAll", query = "SELECT r FROM Regions r")
     , @NamedQuery(name = "Regions.findById", query = "SELECT r FROM Regions r WHERE r.id = :id")
@@ -35,7 +37,7 @@ public class Regions implements Serializable {
     private String id;
     @Column(name = "NAME")
     private String name;
-    @OneToMany(mappedBy = "regionId")
+    @OneToMany(mappedBy = "regionId", fetch = FetchType.EAGER)
     private List<Countries> countriesList;
 
     public Regions() {
@@ -91,7 +93,7 @@ public class Regions implements Serializable {
 
     @Override
     public String toString() {
-        return "com.company.Regions[ id=" + id + " ]";
+        return "com.company.entity.Regions[ id=" + id + " ]";
     }
     
 }

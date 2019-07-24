@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,9 +47,9 @@ public class Jobs implements Serializable {
     private BigDecimal minSalary;
     @Column(name = "MAX_SALARY")
     private BigDecimal maxSalary;
-    @OneToMany(mappedBy = "jobId")
+    @OneToMany(mappedBy = "jobId", fetch = FetchType.LAZY)
     private List<Employees> employeesList;
-    @OneToMany(mappedBy = "jobId")
+    @OneToMany(mappedBy = "jobId", fetch = FetchType.LAZY)
     private List<JobHistory> jobHistoryList;
 
     public Jobs() {
@@ -128,7 +129,7 @@ public class Jobs implements Serializable {
 
     @Override
     public String toString() {
-        return "com.company.Jobs[ id=" + id + " ]";
+        return "com.company.entity.Jobs[ id=" + id + " ]";
     }
     
 }

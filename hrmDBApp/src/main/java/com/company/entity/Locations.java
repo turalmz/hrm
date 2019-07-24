@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,9 +51,9 @@ public class Locations implements Serializable {
     @Column(name = "STATE_PROVINCE")
     private String stateProvince;
     @JoinColumn(name = "COUNTRY_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Countries countryId;
-    @OneToMany(mappedBy = "locationId")
+    @OneToMany(mappedBy = "locationId", fetch = FetchType.EAGER)
     private List<Departments> departmentsList;
 
     public Locations() {
@@ -140,7 +141,7 @@ public class Locations implements Serializable {
 
     @Override
     public String toString() {
-        return "com.company.Locations[ id=" + id + " ]";
+        return "com.company.entity.Locations[ id=" + id + " ]";
     }
     
 }

@@ -55,12 +55,12 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="btnAdd" min="-2" pref="70" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                          <Component id="btnDelete1" min="-2" pref="70" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="btnDelete1" min="-2" pref="73" max="-2" attributes="0"/>
                       </Group>
                       <Component id="btnDelete" alignment="0" min="-2" pref="70" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="433" max="32767" attributes="0"/>
+                  <EmptySpace pref="443" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,15 +42,12 @@ public class Departments implements Serializable {
     @Column(name = "NAME")
     private String name;
     @JoinColumn(name = "LOCATION_ID", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Locations locationId;
     @JoinColumn(name = "MANAGER_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Employees managerId;
-    @OneToMany(mappedBy = "departmentId")
-    private List<Employees> employeesList;
-    @OneToMany(mappedBy = "departmentId")
-    private List<JobHistory> jobHistoryList;
+
 
     public Departments() {
     }
@@ -90,21 +88,7 @@ public class Departments implements Serializable {
         this.managerId = managerId;
     }
 
-    public List<Employees> getEmployeesList() {
-        return employeesList;
-    }
 
-    public void setEmployeesList(List<Employees> employeesList) {
-        this.employeesList = employeesList;
-    }
-
-    public List<JobHistory> getJobHistoryList() {
-        return jobHistoryList;
-    }
-
-    public void setJobHistoryList(List<JobHistory> jobHistoryList) {
-        this.jobHistoryList = jobHistoryList;
-    }
 
     @Override
     public int hashCode() {
@@ -128,7 +112,7 @@ public class Departments implements Serializable {
 
     @Override
     public String toString() {
-        return "com.company.Departments[ id=" + id + " ]";
+        return "com.company.entity.Departments[ id=" + id + " ]";
     }
     
 }
