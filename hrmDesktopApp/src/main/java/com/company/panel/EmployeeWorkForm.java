@@ -444,24 +444,46 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             Object status = hmapStatus.get(entry.getKey());
             
             if(status == "delete"){
-                employeeDao.removeEmployeeMonth(Integer.parseInt(entry.getValue().get(0).toString()));
+                employeeDao.removeEmployeeMonth(Integer.parseInt(entry.getKey().toString()));
             }else if(status=="update"){
                 
-                EmployeeMonth empMon= employeeDao.getById(Integer.parseInt(entry.getValue().get(0).toString()));
+                System.err.println("entry value");
                 
-                for(EmployeeMonthHours emMonHors : empMon.getEmployeeMonthHoursList()){
-                    
-                    //if()
-                    emMonHors.setHours(8);
+                System.err.print(entry.getValue());
+                
+                Integer ind = Integer.parseInt(entry.getKey().toString());
+                
+
+                
+                System.err.println("index:");
+
+                System.err.println(ind);
+
+                
+                EmployeeMonth empMon = employeeDao.getById(ind);
+                
+                if(empMon!=null){
+                
+                    for(EmployeeMonthHours emMonHors : empMon.getEmployeeMonthHoursList()){
+
+                        //if()
+                        Boolean b =(Boolean)(entry.getValue().get(emMonHors.getDay()));
+                        if(b!=null){
+                            System.out.println("alma");
+                        }
+                        emMonHors.setHours(8);
+                        for (Map.Entry<Integer,Object> entr : entry.getValue().entrySet()) {
+                            if(entr.getKey()==emMonHors.getDay())
+                            System.out.println(entr.getKey()+" : "+entr.getValue());
+                        } 
+                    }
+
+                    //employeehoursDao.getById(Integer.parseInt(entry.getValue().get(0).toString()));
+
                 }
-                
-                //employeehoursDao.getById(Integer.parseInt(entry.getValue().get(0).toString()));
-            
             }
 
-            for (Map.Entry<Integer,Object> entr : entry.getValue().entrySet()) {
-                System.out.println(entr.getKey()+" : "+entr.getValue());
-            } 
+
                 
         } 
         
