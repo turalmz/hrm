@@ -1,19 +1,10 @@
 package com.company;
 
 
-import com.company.entity.Countries;
-import com.company.panel.EmployeesForm;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 import com.company.service.inter.DepartmentServiceInter;
 import com.company.service.inter.JobServiceInter;

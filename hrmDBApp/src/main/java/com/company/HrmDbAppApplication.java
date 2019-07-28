@@ -1,6 +1,8 @@
 package com.company;
 
+import com.company.entity.EmployeeMonth;
 import com.company.entity.Employees;
+import com.company.service.inter.EmployeeMonthServiceInter;
 import com.company.service.inter.EmployeesServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +23,11 @@ public class HrmDbAppApplication {
 	@Qualifier("employeeService")
 
 	private EmployeesServiceInter userService;
+        
+        
+        @Autowired
+	//@Qualifier("employeeMonthService")
+        EmployeeMonthServiceInter employeeDao ;
 
 	@Bean
 	public CommandLineRunner run() {
@@ -34,17 +41,12 @@ public class HrmDbAppApplication {
 					Employees u = users.get(i);
 					System.out.println(u);
 				}
+                                
+                                EmployeeMonth empMon = employeeDao.getById(3);
+                                
+                                System.err.println("empMon:");
+                                System.err.println(empMon);
 
-//				for(int i=0;i<10;i++){
-//					userService.getAll();
-//					Employees u = userService.getById(i);
-//					System.out.println(u);
-//					if(u!=null){
-//						u.setFirstname("Pala");
-//					}
-//				}
-//
-//				userService.getById(6);//
 			}
 		};
 

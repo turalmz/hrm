@@ -38,7 +38,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
      * Creates new form Users
      */
     
-    List<Integer> listSelected =  new ArrayList<Integer>();;
+    List<Integer> listSelected =  new ArrayList<Integer>();
     HashMap<Integer, HashMap<Integer,Object>> hmap = new HashMap<Integer, HashMap<Integer,Object>>();
     HashMap<Integer, String> hmapStatus = new HashMap<Integer, String>();
 
@@ -118,7 +118,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             row.add(us.getId());
             
 
-            row.add(cbEmp);
+            row.add(us.getEmpId());
             //row.add(us.getEmpId());
             
             row.add(us.getHours());
@@ -133,9 +133,11 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
               
                 for (EmployeeMonthHours e :lst){
 
-                    if(i==e.getDay())
+                    
+                    if(i==e.getDay() && e.getHours()!=null)
                     //row.add(e.getHours());
-                        if(e.getHours()==1)
+                        
+                        if(e.getHours()==8)
                             row.add(Boolean.TRUE);
                         else 
                             row.add(Boolean.FALSE);   
@@ -389,6 +391,8 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         if (row >= 0 && col >= 0) {
             
             Boolean value = (Boolean) tblUsers.getModel().getValueAt(row, col);
+            
+            row = (Integer) tblUsers.getModel().getValueAt(row, 0);
             listSelected.add(row);
             
             Object h = hmap.get(row);
@@ -462,23 +466,31 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                 
                 EmployeeMonth empMon = employeeDao.getById(ind);
                 
+                
+                
+                if(empMon==null){
+                
+                    System.err.println("I am in empMon is null");           
+                    
+                //employeeDao.addEmployeeMonth(new EmployeeMonth().setEmpId(empId));
+                
+                
+                }
+                
                 if(empMon!=null){
                 
-                    for(EmployeeMonthHours emMonHors : empMon.getEmployeeMonthHoursList()){
-
-                        //if()
-                        Boolean b =(Boolean)(entry.getValue().get(emMonHors.getDay()));
-                        if(b!=null){
-                            System.out.println("alma");
-                        }
-                        emMonHors.setHours(8);
+                    System.err.println("I am in empMon is not null");
+                            
+                        //emMonHors.setHours(8);
                         for (Map.Entry<Integer,Object> entr : entry.getValue().entrySet()) {
-                            if(entr.getKey()==emMonHors.getDay())
+                            EmployeeMonthHours emhors = this.getEmployeeMonthHours(empMon, entr.getKey());
+                            emhors.setHours(8);
+                            
+                           
+                            employeehoursDao.addEmployeeMonthHours(emhors);
                             System.out.println(entr.getKey()+" : "+entr.getValue());
                         } 
-                    }
 
-                    //employeehoursDao.getById(Integer.parseInt(entry.getValue().get(0).toString()));
 
                 }
             }
@@ -490,6 +502,54 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    private EmployeeMonthHours getEmployeeMonthHours(EmployeeMonth empMon, Integer day){
+        
+
+        
+        
+        List<EmployeeMonthHours> emMonHorsList =  empMon.getEmployeeMonthHoursList();
+        
+        
+        if(emMonHorsList!=null){
+        
+        
+            for(EmployeeMonthHours emMonHors : emMonHorsList){
+
+                if(day==emMonHors.getDay()){
+                    System.out.println("exists : "+emMonHors.getDay());
+
+                    return emMonHors;
+                } 
+            }
+        }else{
+        
+            emMonHorsList =  new ArrayList<EmployeeMonthHours>();
+            
+            
+        }
+        
+        EmployeeMonthHours newEmpMonHours = new EmployeeMonthHours();
+        
+        newEmpMonHours.setEmpId(empMon.getEmpId());
+        newEmpMonHours.setEmpMonthId(empMon);
+        newEmpMonHours.setDay(day);
+        
+        
+        emMonHorsList.add(newEmpMonHours);
+        
+        empMon.setEmployeeMonthHoursList(emMonHorsList );
+        
+        return newEmpMonHours;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         int column = 0;
 
