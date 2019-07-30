@@ -125,28 +125,37 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             
             row.add(us.getMonthId());
             
+            List<EmployeeMonthHours> lst = us.getEmployeeMonthHoursList();
+
             for (int i=1;i<=31;i++ ){
-                List<EmployeeMonthHours> lst = us.getEmployeeMonthHoursList();
 
-                //System.out.print(lst);
+                boolean exists = false;
 
-              
                 for (EmployeeMonthHours e :lst){
 
-                    
-                    if(i==e.getDay() && e.getHours()!=null)
-                    //row.add(e.getHours());
+                    System.out.println("number day - "+i);
+                    if(i==e.getDay() && e.getHours()!=null){
+                        System.out.println("equal");
                         
                         if(e.getHours()==8)
-                            row.add(Boolean.TRUE);
+                            exists=true;
                         else 
-                            row.add(Boolean.FALSE);   
-                        
-                    else{
-                        row.add(Boolean.FALSE);
+                            exists=false;
+                        break;
+                    }else{
+                        exists=false;
                     }
 
                 }
+                
+                if(exists==true){
+                row.add(Boolean.TRUE);
+                
+                }else{
+                row.add(Boolean.FALSE);
+                
+                }
+                
             }
             
 
@@ -407,7 +416,8 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
             System.err.println("--------hmap----------");
             System.err.println(hmap);
-            helement.put(col,value);
+            helement.put(col-3,value);
+            System.err.print("print - "+(col-3));
             hmap.put(row, helement);
             
             hmapStatus.put(row, "update");
@@ -483,8 +493,10 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                             
                         //emMonHors.setHours(8);
                         for (Map.Entry<Integer,Object> entr : entry.getValue().entrySet()) {
+                            System.err.println("val"+entr);
                             EmployeeMonthHours emhors = this.getEmployeeMonthHours(empMon, entr.getKey());
                             emhors.setHours(8);
+                            emhors.setMonthId(empMon.getMonthId());
                             
                            
                             employeehoursDao.addEmployeeMonthHours(emhors);
@@ -533,7 +545,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         newEmpMonHours.setEmpId(empMon.getEmpId());
         newEmpMonHours.setEmpMonthId(empMon);
         newEmpMonHours.setDay(day);
-        
+        //newEmpMonHours.setEmpMonthId(empMon);
         
         emMonHorsList.add(newEmpMonHours);
         
