@@ -12,13 +12,15 @@ import com.company.entity.EmployeeMonthHours;
 import com.company.service.inter.EmployeesServiceInter;
 
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
 import com.company.entity.Employees;
 import com.company.service.inter.EmployeeMonthHoursServiceInter;
 import com.company.service.inter.EmployeeMonthServiceInter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +46,10 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     HashMap<Integer,Object> helement = null;
     
+    private List<Employees> emUpdateList;
+    
+    private List<Integer> comboxUpdateList;
+    
     private final EmployeeMonthServiceInter employeeDao = HrmDesktopAppApplication.employeeMonthService;
     private final EmployeeMonthHoursServiceInter employeehoursDao = HrmDesktopAppApplication.employeeMonthHoursService;
     private final EmployeesServiceInter empDao = HrmDesktopAppApplication.employeeService;
@@ -54,11 +60,21 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         initComponents();
         ///alma();
         
+        comboxUpdateList=new ArrayList<Integer>();
+        emUpdateList = new ArrayList<Employees>();
+        
         cbEmp.removeAllItems();
 
         for (Employees con : empDao.getAll()) {
             cbEmp.addItem(con);
+            //emUpdateList.add(con);
         }
+        
+        
+
+        
+        
+
 
     }
     public void alma(){
@@ -133,9 +149,9 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
                 for (EmployeeMonthHours e :lst){
 
-                    System.out.println("number day - "+i);
+                    //System.out.println("number day - "+i);
                     if(i==e.getDay() && e.getHours()!=null){
-                        System.out.println("equal");
+                       // System.out.println("equal");
                         
                         if(e.getHours()==8)
                             exists=true;
@@ -177,15 +193,29 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         tblUsers.setModel(tableModel);
         
         TableColumn sportColumn = tblUsers.getColumnModel().getColumn(1);
-//        JComboBox comboBox = new JComboBox();
-//        comboBox.addItem("Snowboarding");
-//        comboBox.addItem("Rowing");
-//        comboBox.addItem("Chasing toddlers");
-//        comboBox.addItem("Speed reading");
-//        comboBox.addItem("Teaching high school");
-//        comboBox.addItem("None");
-        //sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
+
+        //sportColumn.setCellEditor(new CustomComboBoxEditor(new JComboBox<>()));
+        
         sportColumn.setCellEditor(new DefaultCellEditor(cbEmp));
+       
+        cbEmp.addActionListener (new ActionListener () {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+
+           JComboBox box = (JComboBox) e.getSource();
+  //LogLevel level = (LogLevel) box.getSelectedItem();
+            
+            
+            Employees em = (Employees) box.getSelectedItem();
+            emUpdateList.add(em);
+            
+            System.err.println("burdayam");
+            
+            
+            System.err.println(em);
+            }
+        });
 
     }
 
@@ -310,6 +340,19 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblUsersMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblUsersMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tblUsersMouseReleased(evt);
+            }
+        });
+        tblUsers.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                tblUsersInputMethodTextChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(tblUsers);
 
@@ -345,9 +388,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
 
-        
-        
-        
+
         int column = 0;
 
         for (int row : tblUsers.getSelectedRows()) {
@@ -397,7 +438,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         int col = tblUsers.columnAtPoint(evt.getPoint());
                 System.out.println("Count : " + row);
 
-        if (row >= 0 && col >= 0) {
+        if (row >= 0 && col >= 3) {
             
             Boolean value = (Boolean) tblUsers.getModel().getValueAt(row, col);
             
@@ -507,17 +548,31 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                 }
             }
 
-
-                
+        
+            
         } 
         
-        
+            for(Integer el:comboxUpdateList){
+                System.err.println("elemento - "+el);
+                
+                String str = tblUsers.getModel().getValueAt(el, 1).toString();
+                String[] splitStr = str.split("\\s+");
+                Integer ind = Integer.parseInt(tblUsers.getModel().getValueAt(el, 0).toString());
+                Integer id = Integer.parseInt(splitStr[0]);
+                EmployeeMonth empMon = employeeDao.getById(ind);
+                Employees emp = emUpdateList.get(el);
+                empMon.setEmpId(new Employees(id));
+                employeeDao.updateEmployeeMonth(empMon);
+                System.err.println(emp.toString());
+                System.err.println(str);
+                System.err.println(ind);
+            }
+            comboxUpdateList.clear();
+            
     }//GEN-LAST:event_btnSaveActionPerformed
-
     private EmployeeMonthHours getEmployeeMonthHours(EmployeeMonth empMon, Integer day){
         
 
-        
         
         List<EmployeeMonthHours> emMonHorsList =  empMon.getEmployeeMonthHoursList();
         
@@ -555,13 +610,6 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         int column = 0;
 
@@ -589,6 +637,37 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void tblUsersMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMousePressed
+                
+        int row = tblUsers.rowAtPoint(evt.getPoint());
+        int col = tblUsers.columnAtPoint(evt.getPoint());
+                System.out.println("Count : " + row);    
+        
+        Employees value = (Employees) tblUsers.getModel().getValueAt(row, col);
+            String val= cbEmp.getSelectedItem().toString();
+
+            System.err.println("------String----------");
+             System.err.println(col);
+            System.err.println(row);
+            
+            comboxUpdateList.add(row);
+            System.err.println(value);
+            System.err.print(String.valueOf(cbEmp.getSelectedItem()));
+ 
+            Employees user = (Employees) tblUsers.getModel().getValueAt(row,1);
+            System.err.println(user);
+            System.err.println(val);
+            System.err.println("----------------------");
+    }//GEN-LAST:event_tblUsersMousePressed
+
+    private void tblUsersMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseReleased
+
+    }//GEN-LAST:event_tblUsersMouseReleased
+
+    private void tblUsersInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tblUsersInputMethodTextChanged
+         System.err.print(evt.getText());
+    }//GEN-LAST:event_tblUsersInputMethodTextChanged
 
     /**
      * @param args the command line arguments

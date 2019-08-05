@@ -224,7 +224,7 @@ public class Employees implements Serializable {
 
     @Override
     public String toString() {
-        return this.firstname +" "+this.lastname;
+        return ""+this.id+" "+this.firstname +" "+this.lastname;
     }
     
 }
