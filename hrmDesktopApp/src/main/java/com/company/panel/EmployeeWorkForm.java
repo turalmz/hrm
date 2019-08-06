@@ -39,7 +39,8 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     /**
      * Creates new form Users
      */
-    
+    public javax.swing.JComboBox<Employees> cbEmp;
+
     List<Integer> listSelected =  new ArrayList<Integer>();
     HashMap<Integer, HashMap<Integer,Object>> hmap = new HashMap<Integer, HashMap<Integer,Object>>();
     HashMap<Integer, String> hmapStatus = new HashMap<Integer, String>();
@@ -63,10 +64,10 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         comboxUpdateList=new ArrayList<Integer>();
         emUpdateList = new ArrayList<Employees>();
         
-        cbEmp.removeAllItems();
+        cbEmployees.removeAllItems();
 
         for (Employees con : empDao.getAll()) {
-            cbEmp.addItem(con);
+            cbEmployees.addItem(con);
             //emUpdateList.add(con);
         }
         
@@ -78,14 +79,18 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     }
     public void alma(){
-        generateEmployees();
+        generateEmployees("All","All");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
-    private void generateEmployees() {
-        List<EmployeeMonth> users = employeeDao.getAll();
-        //DefaultTableModel tableModel = new DefaultTableModel();
-
+    private void generateEmployees(String key,String value) {
+        List<EmployeeMonth> users =null;
+        if(key=="All"){
+             users = employeeDao.getAll();
+            //DefaultTableModel tableModel = new DefaultTableModel();
+        }else {
+             users = employeeDao.getByEmployeesId(16);
+        }
         Vector vectorHeaders = new Vector();
 
         vectorHeaders.add("ID");
@@ -196,9 +201,9 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
         //sportColumn.setCellEditor(new CustomComboBoxEditor(new JComboBox<>()));
         
-        sportColumn.setCellEditor(new DefaultCellEditor(cbEmp));
+        sportColumn.setCellEditor(new DefaultCellEditor(cbEmployees));
        
-        cbEmp.addActionListener (new ActionListener () {
+        cbEmployees.addActionListener (new ActionListener () {
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -233,9 +238,10 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
-        cbEmp = new javax.swing.JComboBox<>();
+        cbEmployees = new javax.swing.JComboBox<>();
         btnSave = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
+        cbDepartment = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
 
@@ -292,21 +298,26 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(cbEmp, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(cbEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                            .addComponent(cbDepartment, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -315,10 +326,12 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE)
                 .addComponent(btnSave)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbEmp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSearch)
                     .addComponent(btnAdd)
                     .addComponent(btnUpdate)
                     .addComponent(btnDelete)
@@ -348,10 +361,10 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             }
         });
         tblUsers.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 tblUsersInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jScrollPane1.setViewportView(tblUsers);
@@ -372,7 +385,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -381,7 +394,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
 
-        generateEmployees();
+        generateEmployees("Dep","16");
 
 
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -400,7 +413,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             employeeDao.removeEmployeeMonth(Integer.parseInt(value));
 
         }
-        generateEmployees();
+        generateEmployees("All","All");
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -645,7 +658,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                 System.out.println("Count : " + row);    
         
         Employees value = (Employees) tblUsers.getModel().getValueAt(row, col);
-            String val= cbEmp.getSelectedItem().toString();
+            String val= cbEmployees.getSelectedItem().toString();
 
             System.err.println("------String----------");
              System.err.println(col);
@@ -653,7 +666,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             
             comboxUpdateList.add(row);
             System.err.println(value);
-            System.err.print(String.valueOf(cbEmp.getSelectedItem()));
+            System.err.print(String.valueOf(cbEmployees.getSelectedItem()));
  
             Employees user = (Employees) tblUsers.getModel().getValueAt(row,1);
             System.err.println(user);
@@ -712,7 +725,8 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JComboBox<Employees> cbEmp;
+    private javax.swing.JComboBox<Employees> cbDepartment;
+    private javax.swing.JComboBox<Employees> cbEmployees;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsers;

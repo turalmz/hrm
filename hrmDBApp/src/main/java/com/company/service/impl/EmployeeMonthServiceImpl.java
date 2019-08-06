@@ -32,6 +32,12 @@ public class EmployeeMonthServiceImpl implements EmployeeMonthServiceInter {
     }
 
     @Override
+    public List<EmployeeMonth> getByEmployeesId(int EMP_ID) {
+        return entityDao.findByEmployeesId(EMP_ID);
+    }
+    
+    
+    @Override
     public boolean addEmployeeMonth(EmployeeMonth u) {
         entityDao.save(u);
         return true;
@@ -49,6 +55,8 @@ public class EmployeeMonthServiceImpl implements EmployeeMonthServiceInter {
         entityDao.deleteById(id);
         return true;
     }
+
+
 
 
 

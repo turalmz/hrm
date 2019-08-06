@@ -17,11 +17,8 @@ public interface EmployeeMonthServiceInter {
 
     List<EmployeeMonth> getAll();
 
-   //List<EmployeeMonth> findByFirstnameAndLastname(String firstname, String lastname);
+   List<EmployeeMonth> getByEmployeesId(int EMP_ID);
 
-
-
-    
     public EmployeeMonth getById(int id);
 
     public boolean addEmployeeMonth(EmployeeMonth u);
