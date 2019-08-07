@@ -7,6 +7,7 @@ package com.company.panel;
 
 
 import com.company.HrmDesktopAppApplication;
+import com.company.entity.Departments;
 import com.company.entity.EmployeeMonth;
 import com.company.entity.EmployeeMonthHours;
 import com.company.service.inter.EmployeesServiceInter;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
 import com.company.entity.Employees;
+import com.company.service.inter.DepartmentServiceInter;
 import com.company.service.inter.EmployeeMonthHoursServiceInter;
 import com.company.service.inter.EmployeeMonthServiceInter;
 import java.awt.event.ActionEvent;
@@ -39,7 +41,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     /**
      * Creates new form Users
      */
-    public javax.swing.JComboBox<Employees> cbEmp;
+    public javax.swing.JComboBox<Employees> cbEmp=new JComboBox<>();
 
     List<Integer> listSelected =  new ArrayList<Integer>();
     HashMap<Integer, HashMap<Integer,Object>> hmap = new HashMap<Integer, HashMap<Integer,Object>>();
@@ -55,6 +57,9 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     private final EmployeeMonthHoursServiceInter employeehoursDao = HrmDesktopAppApplication.employeeMonthHoursService;
     private final EmployeesServiceInter empDao = HrmDesktopAppApplication.employeeService;
 
+    private final DepartmentServiceInter depDao = HrmDesktopAppApplication.departmentService;
+    
+    
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public EmployeeWorkForm() {
@@ -65,13 +70,18 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         emUpdateList = new ArrayList<Employees>();
         
         cbEmployees.removeAllItems();
+        cbEmp.removeAllItems();
 
         for (Employees con : empDao.getAll()) {
             cbEmployees.addItem(con);
+            cbEmp.addItem(con);
             //emUpdateList.add(con);
         }
         
+        for(Departments dep : depDao.getAll()){
         
+        cbDepartment.addItem(dep);
+        }
 
         
         
@@ -201,15 +211,15 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
         //sportColumn.setCellEditor(new CustomComboBoxEditor(new JComboBox<>()));
         
-        sportColumn.setCellEditor(new DefaultCellEditor(cbEmployees));
+        sportColumn.setCellEditor(new DefaultCellEditor(cbEmp));
        
-        cbEmployees.addActionListener (new ActionListener () {
+        cbEmp.addActionListener (new ActionListener () {
         @Override
         public void actionPerformed(ActionEvent e) {
 
 
            JComboBox box = (JComboBox) e.getSource();
-  //LogLevel level = (LogLevel) box.getSelectedItem();
+ 
             
             
             Employees em = (Employees) box.getSelectedItem();
@@ -300,11 +310,12 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cbEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-                            .addComponent(cbDepartment, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(cbEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -314,7 +325,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 220, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -361,10 +372,10 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             }
         });
         tblUsers.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 tblUsersInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jScrollPane1.setViewportView(tblUsers);
@@ -418,7 +429,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        EmployeeForm uf = new EmployeeForm();
+        EmployeeMonthForm uf = new EmployeeMonthForm(this);
         uf.setVisible(true);
 
     }//GEN-LAST:event_btnAddActionPerformed
@@ -569,7 +580,9 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                 System.err.println("elemento - "+el);
                 
                 String str = tblUsers.getModel().getValueAt(el, 1).toString();
+                
                 String[] splitStr = str.split("\\s+");
+                
                 Integer ind = Integer.parseInt(tblUsers.getModel().getValueAt(el, 0).toString());
                 Integer id = Integer.parseInt(splitStr[0]);
                 EmployeeMonth empMon = employeeDao.getById(ind);
@@ -612,9 +625,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         
         newEmpMonHours.setEmpId(empMon.getEmpId());
         newEmpMonHours.setEmpMonthId(empMon);
-        newEmpMonHours.setDay(day);
-        //newEmpMonHours.setEmpMonthId(empMon);
-        
+        newEmpMonHours.setDay(day);        
         emMonHorsList.add(newEmpMonHours);
         
         empMon.setEmployeeMonthHoursList(emMonHorsList );
@@ -627,7 +638,6 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         int column = 0;
 
         for (int row : tblUsers.getSelectedRows()) {
-            System.out.println("Count : " + row);
             String value = tblUsers.getModel().getValueAt(row, column).toString();
             System.out.println("value : " + value);
             System.out.println("row : " + row);
@@ -725,7 +735,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JComboBox<Employees> cbDepartment;
+    private javax.swing.JComboBox<Departments> cbDepartment;
     private javax.swing.JComboBox<Employees> cbEmployees;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
