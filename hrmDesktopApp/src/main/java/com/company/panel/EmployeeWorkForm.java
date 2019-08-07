@@ -60,7 +60,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     private final DepartmentServiceInter depDao = HrmDesktopAppApplication.departmentService;
     
     
-    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    //private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public EmployeeWorkForm() {
         initComponents();
@@ -93,7 +93,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
-    private void generateEmployees(String key,String value) {
+    protected void generateEmployees(String key,String value) {
         List<EmployeeMonth> users =null;
         if(key=="All"){
              users = employeeDao.getAll();

@@ -14,6 +14,7 @@ import com.company.entity.Employees;
 import com.company.entity.Month;
 import com.company.service.inter.EmployeeMonthServiceInter;
 import com.company.service.inter.MonthServiceInter;
+import java.util.List;
 import javax.swing.JFrame;
 
 /**
@@ -32,10 +33,9 @@ public class EmployeeMonthForm extends javax.swing.JFrame {
     private final EmployeeMonthServiceInter emploMonDao = HrmDesktopAppApplication.employeeMonthService;
 
     
-    Employees currentEmployee;
-    JFrame parent;
+    EmployeeWorkForm parent;
 
-    public EmployeeMonthForm(javax.swing.JFrame parent) {
+    public EmployeeMonthForm(EmployeeWorkForm parent) {
         initComponents();
         this.parent=parent;
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -145,10 +145,16 @@ public class EmployeeMonthForm extends javax.swing.JFrame {
 
             Employees em = (Employees) cbEmployee.getSelectedItem();
             Month mon = (Month) cbMon.getSelectedItem();
+            
+            List<EmployeeMonth> empList=emploMonDao.getByEmployeesAndMonth(em, mon);
+            
+            if(empList.isEmpty()){
             EmployeeMonth empMon = new EmployeeMonth();
             empMon.setEmpId(em);
             empMon.setMonthId(mon);
             emploMonDao.addEmployeeMonth(empMon);
+            }
+            parent.generateEmployees("All","All");
             
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -185,11 +191,6 @@ public class EmployeeMonthForm extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(EmployeeMonthForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

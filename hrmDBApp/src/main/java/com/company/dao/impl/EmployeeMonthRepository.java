@@ -2,6 +2,7 @@ package com.company.dao.impl;
 
 import com.company.entity.EmployeeMonth;
 import com.company.entity.Employees;
+import com.company.entity.Month;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,8 @@ public interface EmployeeMonthRepository extends JpaRepository<EmployeeMonth, In
     EmployeeMonth save(EmployeeMonth u);
 
     public List<EmployeeMonth> findByEmployeesId(int EMP_ID);
-    
+
+
+    public List<EmployeeMonth> findByEmployeesAndMonth(Employees EMP_ID,Month mon);    
 
 }

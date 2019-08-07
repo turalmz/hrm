@@ -3,6 +3,8 @@ package com.company.service.impl;
 
 import com.company.dao.impl.EmployeeMonthRepository;
 import com.company.entity.EmployeeMonth;
+import com.company.entity.Employees;
+import com.company.entity.Month;
 import com.company.service.inter.EmployeeMonthServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,6 +36,12 @@ public class EmployeeMonthServiceImpl implements EmployeeMonthServiceInter {
     @Override
     public List<EmployeeMonth> getByEmployeesId(int EMP_ID) {
         return entityDao.findByEmployeesId(EMP_ID);
+    }
+    
+    
+    @Override
+    public List<EmployeeMonth> getByEmployeesAndMonth(Employees EMP_ID,Month mon) {
+        return entityDao.findByEmployeesAndMonth(EMP_ID,mon);
     }
     
     

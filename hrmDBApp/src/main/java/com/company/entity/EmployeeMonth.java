@@ -31,7 +31,9 @@ import javax.persistence.Table;
     @NamedQuery(name = "EmployeeMonth.findAll", query = "SELECT e FROM EmployeeMonth e")
     , @NamedQuery(name = "EmployeeMonth.findById", query = "SELECT e FROM EmployeeMonth e WHERE e.id = :id")
         , @NamedQuery(name = "EmployeeMonth.findByEmployeesId", query = "SELECT e FROM EmployeeMonth e WHERE e.empId = ?1")
-    , @NamedQuery(name = "EmployeeMonth.findByHours", query = "SELECT e FROM EmployeeMonth e WHERE e.hours = :hours")})
+        , @NamedQuery(name = "EmployeeMonth.findByEmployeesAndMonth", query = "SELECT e FROM EmployeeMonth e WHERE e.empId = ?1 and e.monthId = ?2")
+
+        , @NamedQuery(name = "EmployeeMonth.findByHours", query = "SELECT e FROM EmployeeMonth e WHERE e.hours = :hours")})
 public class EmployeeMonth implements Serializable {
 
     private static final long serialVersionUID = 1L;
