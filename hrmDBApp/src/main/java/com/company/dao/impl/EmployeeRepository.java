@@ -1,5 +1,6 @@
 package com.company.dao.impl;
 
+import com.company.entity.Departments;
 import com.company.entity.Employees;
 import com.company.entity.Jobs;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<Employees, Integer> {
 
     List<Employees> findByFirstnameAndLastname(String firstname, String lastname);
+    
+    List<Employees> findByDepartment(Departments dep);
 
     List<Employees> findAll();
 

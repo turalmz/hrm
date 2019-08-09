@@ -5,6 +5,7 @@
  */
 package com.company.service.inter;
 
+import com.company.entity.Departments;
 import com.company.entity.Employees;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface EmployeesServiceInter {
     List<Employees> getAll();
 
     List<Employees> findByFirstnameAndLastname(String firstname, String lastname);
+    
+    List<Employees> getByDepartment(Departments dep);
 
     public Employees getById(int id);
 

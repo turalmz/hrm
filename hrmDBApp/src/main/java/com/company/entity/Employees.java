@@ -36,6 +36,8 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Employees.findById", query = "SELECT e FROM Employees e WHERE e.id = :id")
     , @NamedQuery(name = "Employees.findByFirstname", query = "SELECT e FROM Employees e WHERE e.firstname = :firstname")
     , @NamedQuery(name = "Employees.findByEmail", query = "SELECT e FROM Employees e WHERE e.email = :email")
+     , @NamedQuery(name = "Employees.findByDepartment", query = "SELECT e FROM Employees e WHERE e.departmentId = ?1")
+
     , @NamedQuery(name = "Employees.findByPhoneNumber", query = "SELECT e FROM Employees e WHERE e.phoneNumber = :phoneNumber")
     , @NamedQuery(name = "Employees.findByHireDate", query = "SELECT e FROM Employees e WHERE e.hireDate = :hireDate")
     , @NamedQuery(name = "Employees.findBySalary", query = "SELECT e FROM Employees e WHERE e.salary = :salary")
@@ -224,7 +226,11 @@ public class Employees implements Serializable {
 
     @Override
     public String toString() {
+        if(this.id==null||this.firstname==null||this.lastname==null){
+            return "";
+        }
         return ""+this.id+" "+this.firstname +" "+this.lastname;
+        
     }
     
 }

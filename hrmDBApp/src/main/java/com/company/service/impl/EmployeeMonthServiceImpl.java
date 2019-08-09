@@ -2,6 +2,7 @@ package com.company.service.impl;
 
 
 import com.company.dao.impl.EmployeeMonthRepository;
+import com.company.entity.Departments;
 import com.company.entity.EmployeeMonth;
 import com.company.entity.Employees;
 import com.company.entity.Month;
@@ -34,9 +35,11 @@ public class EmployeeMonthServiceImpl implements EmployeeMonthServiceInter {
     }
 
     @Override
-    public List<EmployeeMonth> getByEmployeesId(int EMP_ID) {
+    public List<EmployeeMonth> getByEmployeesId(Employees EMP_ID) {
         return entityDao.findByEmployeesId(EMP_ID);
     }
+    
+    
     
     
     @Override
@@ -62,6 +65,11 @@ public class EmployeeMonthServiceImpl implements EmployeeMonthServiceInter {
     public boolean removeEmployeeMonth(Integer id) {
         entityDao.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<EmployeeMonth> getByEmployeesList(List<Employees> EMP_ID) {
+        return entityDao.findByEmployeesList(EMP_ID);
     }
 
 

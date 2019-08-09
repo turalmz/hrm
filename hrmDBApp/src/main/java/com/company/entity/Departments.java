@@ -112,7 +112,9 @@ public class Departments implements Serializable {
 
     @Override
     public String toString() {
-        return "com.company.entity.Departments[ id=" + id + " ]";
+        if(this.id==null)
+            return "";
+        return ""+this.name;
     }
     
 }

@@ -1,5 +1,6 @@
 package com.company.dao.impl;
 
+import com.company.entity.Departments;
 import com.company.entity.EmployeeMonth;
 import com.company.entity.Employees;
 import com.company.entity.Month;
@@ -23,9 +24,11 @@ public interface EmployeeMonthRepository extends JpaRepository<EmployeeMonth, In
     @Override
     EmployeeMonth save(EmployeeMonth u);
 
-    public List<EmployeeMonth> findByEmployeesId(int EMP_ID);
+    public List<EmployeeMonth> findByEmployeesId(Employees EMP_ID);
 
 
     public List<EmployeeMonth> findByEmployeesAndMonth(Employees EMP_ID,Month mon);    
+
+    public List<EmployeeMonth> findByEmployeesList(List<Employees> EMP_ID);
 
 }

@@ -5,6 +5,7 @@
  */
 package com.company.service.inter;
 
+import com.company.entity.Departments;
 import com.company.entity.EmployeeMonth;
 import com.company.entity.Employees;
 import com.company.entity.Month;
@@ -19,7 +20,9 @@ public interface EmployeeMonthServiceInter {
 
     List<EmployeeMonth> getAll();
 
-    List<EmployeeMonth> getByEmployeesId(int EMP_ID);
+    List<EmployeeMonth> getByEmployeesId(Employees EMP_ID);
+    
+    List<EmployeeMonth> getByEmployeesList(List<Employees> EMP_ID);
 
     List<EmployeeMonth> getByEmployeesAndMonth(Employees EMP_ID,Month mon);
     
