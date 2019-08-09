@@ -66,9 +66,9 @@ public class EmployeeMonthForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lbName.setText("Name");
+        lbName.setText("Employee");
 
-        lbSurname.setText("Surname");
+        lbSurname.setText("Month");
 
         btnSave.setText("save");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +106,7 @@ public class EmployeeMonthForm extends javax.swing.JFrame {
                         .addComponent(cbEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(68, 68, 68)
                 .addComponent(btnSave)
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         pnlUserInfoLayout.setVerticalGroup(
             pnlUserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

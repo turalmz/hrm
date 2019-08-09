@@ -20,15 +20,20 @@ import com.company.entity.Employees;
 import com.company.service.inter.DepartmentServiceInter;
 import com.company.service.inter.EmployeeMonthHoursServiceInter;
 import com.company.service.inter.EmployeeMonthServiceInter;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -64,7 +69,6 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     public EmployeeWorkForm() {
         initComponents();
-        ///alma();
         
         comboxUpdateList=new ArrayList<Integer>();
         emUpdateList = new ArrayList<Employees>();
@@ -72,6 +76,8 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         cbEmployees.removeAllItems();
         cbEmp.removeAllItems();
 
+        cbEmployees.addItem(new Employees());
+        
         for (Employees con : empDao.getAll()) {
             cbEmployees.addItem(con);
             cbEmp.addItem(con);
@@ -98,8 +104,19 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         if(key=="All"){
              users = employeeDao.getAll();
             //DefaultTableModel tableModel = new DefaultTableModel();
-        }else {
-             users = employeeDao.getByEmployeesId(16);
+        //}else {
+             //users = employeeDao.getByEmployeesId(new Employees(16));
+             
+            List<Employees> empList = empDao.getByDepartment(new Departments(1));
+             
+            List<EmployeeMonth> local= null;
+             
+            for(Employees e : empList){
+                
+                 local = employeeDao.getByEmployeesId(e);
+                 users.addAll(local);
+            }
+             
         }
         Vector vectorHeaders = new Vector();
 
@@ -210,6 +227,38 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         TableColumn sportColumn = tblUsers.getColumnModel().getColumn(1);
 
         //sportColumn.setCellEditor(new CustomComboBoxEditor(new JComboBox<>()));
+        
+        
+        
+        tblUsers.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+        {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+            {
+                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                //c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+                 System.out.println("alma");
+                 System.out.println("alma");
+                   // for (Map.Entry<Integer, HashMap<Integer,Object>> entry : hmap.entrySet()) {
+                        
+                    System.out.println("alma");
+                    System.out.println("alma");
+                    //System.out.println(entry.getKey()+" : "+entry.getValue());
+                    Object status = hmapStatus.get(row);
+
+                    //if(status == "delete"){
+                        //c.setBackground(Color.RED );
+                        c.setBackground(hmapStatus.get(row)!=null ? Color.LIGHT_GRAY : Color.WHITE);
+                    //}
+                    
+                    
+                    //}
+                
+                return c;
+            }
+        });
+        
+        
         
         sportColumn.setCellEditor(new DefaultCellEditor(cbEmp));
        
@@ -405,7 +454,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
 
-        generateEmployees("Dep","16");
+        generateEmployees("All","All");
 
 
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -421,7 +470,13 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             System.out.println("value : " + value);
             System.out.println("row : " + row);
 
-            employeeDao.removeEmployeeMonth(Integer.parseInt(value));
+            hmap.put(row,null);
+            hmapStatus.put(row, "delete");
+            
+
+            //employeeDao.removeEmployeeMonth(Integer.parseInt(value));
+            
+            
 
         }
         generateEmployees("All","All");
@@ -523,7 +578,9 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             Object status = hmapStatus.get(entry.getKey());
             
             if(status == "delete"){
-                employeeDao.removeEmployeeMonth(Integer.parseInt(entry.getKey().toString()));
+                String value = tblUsers.getModel().getValueAt(Integer.parseInt(entry.getKey().toString()), 0).toString();
+
+                employeeDao.removeEmployeeMonth(Integer.parseInt(value));
             }else if(status=="update"){
                 
                 System.err.println("entry value");
@@ -667,20 +724,20 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         int col = tblUsers.columnAtPoint(evt.getPoint());
                 System.out.println("Count : " + row);    
         
-        Employees value = (Employees) tblUsers.getModel().getValueAt(row, col);
-            String val= cbEmployees.getSelectedItem().toString();
+//        Employees value = (Employees) tblUsers.getModel().getValueAt(row, col);
+ //           String val= cbEmployees.getSelectedItem().toString();
 
             System.err.println("------String----------");
              System.err.println(col);
             System.err.println(row);
             
             comboxUpdateList.add(row);
-            System.err.println(value);
+//            System.err.println(value);
             System.err.print(String.valueOf(cbEmployees.getSelectedItem()));
  
             Employees user = (Employees) tblUsers.getModel().getValueAt(row,1);
             System.err.println(user);
-            System.err.println(val);
+          //  System.err.println(val);
             System.err.println("----------------------");
     }//GEN-LAST:event_tblUsersMousePressed
 
