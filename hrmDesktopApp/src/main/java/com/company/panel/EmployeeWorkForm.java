@@ -54,7 +54,7 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     HashMap<Integer,Object> helement = null;
     
-    private List<Employees> emUpdateList;
+    private List<Employees> emUpdateList=new ArrayList<Employees>();
     
     private List<Integer> comboxUpdateList;
     
@@ -81,12 +81,13 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         for (Employees con : empDao.getAll()) {
             cbEmployees.addItem(con);
             cbEmp.addItem(con);
-            //emUpdateList.add(con);
         }
         
+        cbDepartment.addItem(new Departments());
+
         for(Departments dep : depDao.getAll()){
         
-        cbDepartment.addItem(dep);
+            cbDepartment.addItem(dep);
         }
 
         
@@ -99,25 +100,47 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
-    protected void generateEmployees(String key,String value) {
-        List<EmployeeMonth> users =null;
+    protected void generateEmployees(String key,Object obj) {
+        List<EmployeeMonth> users =new ArrayList<EmployeeMonth>();
+        List<Employees> empList= new ArrayList<Employees>();
         if(key=="All"){
              users = employeeDao.getAll();
             //DefaultTableModel tableModel = new DefaultTableModel();
         //}else {
-             //users = employeeDao.getByEmployeesId(new Employees(16));
+            //users = employeeDao.getByEmployeesId(new Employees(16));
              
-            List<Employees> empList = empDao.getByDepartment(new Departments(1));
+            //empList = empDao.getByDepartment(new Departments(1));
+            
+            
+            
              
+        }else if(key=="Emp"){
+        
+            empList.add((Employees)obj);
+        
             List<EmployeeMonth> local= null;
              
             for(Employees e : empList){
-                
+
                  local = employeeDao.getByEmployeesId(e);
                  users.addAll(local);
             }
-             
+        
+        }else{
+        
+            empList = empDao.getByDepartment((Departments)obj);
+            List<EmployeeMonth> local= null;
+
+            for(Employees e : empList){
+
+                 local = employeeDao.getByEmployeesId(e);
+                 users.addAll(local);
+            }
         }
+        
+        
+
+        
         Vector vectorHeaders = new Vector();
 
         vectorHeaders.add("ID");
@@ -337,6 +360,12 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             }
         });
 
+        cbEmployees.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEmployeesActionPerformed(evt);
+            }
+        });
+
         btnSave.setText("save");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -421,10 +450,10 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
             }
         });
         tblUsers.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 tblUsersInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jScrollPane1.setViewportView(tblUsers);
@@ -454,8 +483,24 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
 
-        generateEmployees("All","All");
+        String emp= cbEmployees.getSelectedItem().toString();
+        Employees emplel = (Employees)cbEmployees.getSelectedItem();
+        String department= cbDepartment.getSelectedItem().toString();
+        Departments depel=(Departments)cbDepartment.getSelectedItem();
+        
+        System.err.println(emplel);
+        
+        if(!"".equals(emp)){
+        
+            generateEmployees("Emp",emplel);
 
+        }else if(!"".equals(department)){
+        
+            generateEmployees("Dep",depel);
+
+        }else {
+            generateEmployees("All","All");
+        }
 
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -643,10 +688,10 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
                 Integer ind = Integer.parseInt(tblUsers.getModel().getValueAt(el, 0).toString());
                 Integer id = Integer.parseInt(splitStr[0]);
                 EmployeeMonth empMon = employeeDao.getById(ind);
-                Employees emp = emUpdateList.get(el);
+                //Employees emp = emUpdateList.get(el);
                 empMon.setEmpId(new Employees(id));
                 employeeDao.updateEmployeeMonth(empMon);
-                System.err.println(emp.toString());
+                //System.err.println(emp.toString());
                 System.err.println(str);
                 System.err.println(ind);
             }
@@ -748,6 +793,10 @@ public class EmployeeWorkForm extends javax.swing.JFrame {
     private void tblUsersInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tblUsersInputMethodTextChanged
          System.err.print(evt.getText());
     }//GEN-LAST:event_tblUsersInputMethodTextChanged
+
+    private void cbEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEmployeesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbEmployeesActionPerformed
 
     /**
      * @param args the command line arguments
